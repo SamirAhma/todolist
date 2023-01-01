@@ -17,7 +17,7 @@ const Modal = ({ setIsOpen, data }: any) => {
   const onDelete = (ab: string) => {
     const deleteTask = async () => {
       try {
-        await axios.delete(`${baseUrl}/${ab}`);
+        await axios.delete(`${baseUrl}/todo/${ab}`);
         dispatch({
           type: "ON_DUMMY",
         });
@@ -37,7 +37,7 @@ const Modal = ({ setIsOpen, data }: any) => {
   const handleSubmit = () => {
     const edit = async () => {
       try {
-        await axios.put(`${baseUrl}/${data._id}`, {
+        await axios.put(`${baseUrl}/todo/${data._id}`, {
           todo: task,
           completed: completed,
         });
