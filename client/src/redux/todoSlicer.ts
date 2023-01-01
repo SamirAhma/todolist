@@ -5,7 +5,21 @@ export const initialState = {
   modal: { open: false, data: null },
 };
 
-export const reducer = (state: any, action: any) => {
+type TodoAction =
+  | { type: "ADD" | "DELETE" | "UPDATE"; payload: any[] }
+  | { type: "ON_CHANGE"; payload: string }
+  | { type: "ON_CLEAR" }
+  | { type: "ON_DUMMY" }
+  | { type: "OPEN_MODAL"; payload: { open: boolean; data: any } };
+
+type TodoState = {
+  todo: string;
+  todos: any[];
+  dummy: number;
+  modal: { open: boolean; data: any };
+};
+
+export const reducer = (state: TodoState, action: TodoAction) => {
   switch (action.type) {
     case "ADD":
     case "DELETE":

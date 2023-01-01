@@ -10,7 +10,7 @@ import { baseUrl } from "../lib/constant";
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const sendData = async () => {
       try {
@@ -30,36 +30,33 @@ const App = () => {
     sendData();
   };
 
-  const onDelete = (ab: string) => {
-    const deleteTask = async () => {
-      try {
-        await axios.delete(`${baseUrl}/${ab}`);
-        dispatch({
-          type: "ON_DUMMY",
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    deleteTask();
-  };
-
   useEffect(() => {
     const initFetch = async () => {
       try {
         const req = await axios.get(baseUrl);
-        console.log(req.data);
+
+        // The request was successful, so you can access the data as normal
+
         dispatch({
           type: "UPDATE",
           payload: req.data,
         });
+
+        // console.log(req.data);
+        // dispatch({
+        //   type: "UPDATE",
+        //   payload: req.data,
+        // });
       } catch (err) {
         console.log(err);
       }
     };
     initFetch();
   }, [state.dummy]);
-  console.log(state);
+
+  if (!state.todos) {
+    return <>Loading</>;
+  }
   return (
     <div
       className="flex justify-center h-screen"
@@ -70,7 +67,7 @@ const App = () => {
 
         <div className="flex justify-between flex-col body-todo">
           <ul className="">
-            {state.todos.map((t: any) => (
+            {state.todos?.map((t: any) => (
               <li
                 key={t._id}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-1"
@@ -104,7 +101,7 @@ const App = () => {
             ))}
           </ul>
 
-          <form onSubmit={handleSubmit} className="">
+          <form onSubmit={(e) => handleSubmit(e)} className="">
             {/* <input
               type="text"
               onChange={(e) => {
