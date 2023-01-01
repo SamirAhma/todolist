@@ -5,11 +5,12 @@ import Modal from "./components/modal";
 import BackgroundImage from "./assets/sunset.jpg";
 import "./App.css";
 
-import { baseUrl } from "../lib/constant";
-
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://todo-mern-shape.onrender.com/api"
+      : "http://localhost:5000/api";
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const sendData = async () => {
@@ -20,9 +21,9 @@ const App = () => {
         dispatch({
           type: "ON_CLEAR",
         });
-        dispatch({
-          type: "ON_DUMMY",
-        });
+        // dispatch({
+        //   type: "ON_DUMMY",
+        // });
       } catch (err) {
         console.log(err);
       }
@@ -31,28 +32,30 @@ const App = () => {
   };
 
   useEffect(() => {
-    const initFetch = async () => {
-      try {
-        const req = await axios.get(baseUrl);
+    if (state.todo === "") {
+      const initFetch = async () => {
+        try {
+          const req = await axios.get(baseUrl);
 
-        // The request was successful, so you can access the data as normal
+          // The request was successful, so you can access the data as normal
 
-        dispatch({
-          type: "UPDATE",
-          payload: req.data,
-        });
+          dispatch({
+            type: "UPDATE",
+            payload: req.data,
+          });
 
-        // console.log(req.data);
-        // dispatch({
-        //   type: "UPDATE",
-        //   payload: req.data,
-        // });
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    initFetch();
-  }, [state.dummy]);
+          // console.log(req.data);
+          // dispatch({
+          //   type: "UPDATE",
+          //   payload: req.data,
+          // });
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      initFetch();
+    }
+  }, [state.todos]);
 
   if (!state.todos) {
     return <>Loading</>;

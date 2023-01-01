@@ -2,12 +2,16 @@ import React, { useState, useReducer } from "react";
 import { reducer, initialState } from "../redux/todoSlicer";
 import styles from "./Modal.module.css";
 import axios from "axios";
-import { baseUrl } from "../../lib/constant";
+
 const Modal = ({ setIsOpen, data }: any) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [task, setTask] = useState(data.todo);
   const [completed, setCompleted] = useState(data.completed);
   const [todoData, setTodoData] = useState(data);
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://todo-mern-shape.onrender.com/api"
+      : "http://localhost:5000/api";
   const handleChange = (e: any) => {
     setTask(e.target.value);
   };
@@ -18,12 +22,12 @@ const Modal = ({ setIsOpen, data }: any) => {
     const deleteTask = async () => {
       try {
         await axios.delete(`${baseUrl}/todo/${ab}`);
-        dispatch({
-          type: "ON_DUMMY",
-        });
-        setIsOpen({
-          type: "ON_DUMMY",
-        });
+        // dispatch({
+        //   type: "ON_DUMMY",
+        // });
+        // setIsOpen({
+        //   type: "ON_DUMMY",
+        // });
         setIsOpen({
           type: "OPEN_MODAL",
           payload: { open: false },
@@ -41,9 +45,9 @@ const Modal = ({ setIsOpen, data }: any) => {
           todo: task,
           completed: completed,
         });
-        setIsOpen({
-          type: "ON_DUMMY",
-        });
+        // setIsOpen({
+        //   type: "ON_DUMMY",
+        // });
         setIsOpen({
           type: "OPEN_MODAL",
           payload: { open: false },
