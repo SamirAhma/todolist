@@ -4,6 +4,9 @@ import axios from "axios";
 import Modal from "./components/modal";
 import BackgroundImage from "./assets/sunset.jpg";
 import "./App.css";
+
+import { baseUrl } from "../lib/constant";
+
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -11,7 +14,7 @@ const App = () => {
     e.preventDefault();
     const sendData = async () => {
       try {
-        await axios.post("http://localhost:5000/api/add", {
+        await axios.post(`${baseUrl}/add`, {
           todo: state.todo,
         });
         dispatch({
@@ -30,7 +33,7 @@ const App = () => {
   const onDelete = (ab: string) => {
     const deleteTask = async () => {
       try {
-        await axios.delete(`http://localhost:5000/api/todo/${ab}`);
+        await axios.delete(`${baseUrl}/${ab}`);
         dispatch({
           type: "ON_DUMMY",
         });
@@ -44,7 +47,7 @@ const App = () => {
   useEffect(() => {
     const initFetch = async () => {
       try {
-        const req = await axios.get("http://localhost:5000/api/");
+        const req = await axios.get(baseUrl);
         console.log(req.data);
         dispatch({
           type: "UPDATE",

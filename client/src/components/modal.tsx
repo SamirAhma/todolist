@@ -2,6 +2,7 @@ import React, { useState, useReducer } from "react";
 import { reducer, initialState } from "../redux/todoSlicer";
 import styles from "./Modal.module.css";
 import axios from "axios";
+import { baseUrl } from "../../lib/constant";
 const Modal = ({ setIsOpen, data }: any) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [task, setTask] = useState(data.todo);
@@ -16,7 +17,7 @@ const Modal = ({ setIsOpen, data }: any) => {
   const onDelete = (ab: string) => {
     const deleteTask = async () => {
       try {
-        await axios.delete(`http://localhost:5000/api/todo/${ab}`);
+        await axios.delete(`${baseUrl}/${ab}`);
         dispatch({
           type: "ON_DUMMY",
         });
@@ -36,7 +37,7 @@ const Modal = ({ setIsOpen, data }: any) => {
   const handleSubmit = () => {
     const edit = async () => {
       try {
-        await axios.put(`http://localhost:5000/api/todo/${data._id}`, {
+        await axios.put(`${baseUrl}/${data._id}`, {
           todo: task,
           completed: completed,
         });
