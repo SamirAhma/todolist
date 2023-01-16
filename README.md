@@ -26,7 +26,7 @@
 <p>You will also need to set up a MongoDB database and update the connection string in the `config.ts` file.</p>
 <p>Once you have the necessary software and database set up, you can clone the repository and install the dependencies:</p>
 <code>
-git clone https://github.com/&lt;your-username&gt;/to-do-list-website.git<br>
+git clone https://github.com/SamirAhma/to-do-list-website.git<br>
 cd to-do-list-website<br>
 npm install</code>
 <p>Then, you can start the development server:</p>
